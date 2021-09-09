@@ -20,17 +20,15 @@ const HomeView = () => {
       <ul className={s.list}>
         {trendingMovies.map(({ id, title, poster_path }) => (
           <li key={id} className={s.listItem}>
-            <Link className={s.link} to={`books/${id}`}>
+            <Link className={s.link} to={`movies/${id}`}>
               <div className={s.wrapper}>
-                <div className={s.wrapper}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-                    alt={`${title}`}
-                    className={s.image}
-                  />
-                </div>
-                <p className={s.text}>{title}</p>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+                  alt={title}
+                  className={s.image}
+                />
               </div>
+              <p className={s.text}>{title}</p>
             </Link>
           </li>
         ))}

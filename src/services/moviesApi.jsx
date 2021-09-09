@@ -22,4 +22,64 @@ const fetchTrendingMovies = async () => {
   }
 };
 
-export { fetchTrendingMovies };
+const fetchQuery = async (query) => {
+  try {
+    const config = {
+      url: "/search/movie",
+      params: {
+        query,
+      },
+    };
+
+    const { data } = await axios(config);
+    return data.results;
+  } catch (error) {
+    new Error("Server does not respond");
+  }
+};
+
+const fetchMovieDetails = async (movieId) => {
+  try {
+    const config = {
+      url: `/movie/${movieId}`,
+    };
+
+    const { data } = await axios(config, movieId);
+    return data;
+  } catch (error) {
+    new Error("Server does not respond");
+  }
+};
+
+const fetchCastMovie = async (movieId) => {
+  try {
+    const config = {
+      url: `/movie/${movieId}/credits`,
+    };
+
+    const { data } = await axios(config, movieId);
+    return data.cast;
+  } catch (error) {
+    new Error("Server does not respond");
+  }
+};
+
+const fetchReviewMovie = async (movieId) => {
+  try {
+    const config = {
+      url: `/movie/${movieId}/reviews`,
+    };
+    const { data } = await axios(config, movieId);
+    return data.results;
+  } catch (error) {
+    new Error("Server does not respond");
+  }
+};
+
+export {
+  fetchTrendingMovies,
+  fetchMovieDetails,
+  fetchCastMovie,
+  fetchReviewMovie,
+  fetchQuery,
+};

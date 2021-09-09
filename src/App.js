@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { HomeView } from "./components/HomeView/HomeView";
-import { Movies } from "./components/Movies/Movies";
+import { MoviesPage } from "./components/MoviesPage/MoviesPage";
 import { MovieDetailsPage } from "./components/MovieDetailsPage/MovieDetailsPage";
 import { NotFoundView } from "./components/NotFoundView/NotFoundView";
 import { Section } from "./components/Section/Section";
@@ -21,10 +21,10 @@ function App() {
           </Section>
         </Route>
 
-        <Route path="/movies">
+        <Route path="/movies" exact>
           <Section>
             <Container>
-              <Movies />
+              <MoviesPage />
             </Container>
           </Section>
         </Route>
