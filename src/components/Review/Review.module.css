@@ -10,12 +10,13 @@
 
 .subTitle {
   color: #ff6b08;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .text {
   color: #3f4143;
   font-style: italic;
+  margin-bottom: 50px;
 }
 
 .error {
