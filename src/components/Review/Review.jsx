@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchReviewMovie } from "../../services/moviesApi";
+import api from "../../services/moviesApi";
 import s from "./Review.module.css";
 
 const Review = () => {
@@ -12,7 +12,7 @@ const Review = () => {
   }, [movieId]);
 
   const renderReviewMovie = () => {
-    fetchReviewMovie(movieId).then(setMovieReview);
+    api.fetchReviewMovie(movieId).then(setMovieReview);
   };
 
   return (
@@ -36,4 +36,4 @@ const Review = () => {
   );
 };
 
-export { Review };
+export default Review;

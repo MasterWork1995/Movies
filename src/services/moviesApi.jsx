@@ -76,10 +76,11 @@ const fetchReviewMovie = async (movieId) => {
   }
 };
 
-export {
+const api = {
   fetchTrendingMovies,
   fetchMovieDetails,
   fetchCastMovie,
   fetchReviewMovie,
   fetchQuery,
 };
+export default api;

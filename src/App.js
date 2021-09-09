@@ -1,50 +1,53 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import { Header } from "./components/Header/Header";
-import { HomeView } from "./components/HomeView/HomeView";
-import { MoviesPage } from "./components/MoviesPage/MoviesPage";
-import { MovieDetailsPage } from "./components/MovieDetailsPage/MovieDetailsPage";
-import { NotFoundView } from "./components/NotFoundView/NotFoundView";
-import { Section } from "./components/Section/Section";
-import { Container } from "./components/Container/Container";
+import Header from "./components/Header/Header";
+import Container from "./components/Container/Container";
+import Download from "./components/DownloadOrError/DownloadOrError";
+
+const HomeView = lazy(() =>
+  import("./components/HomeView/HomeView" /* webpackChunkName: "HomePage" */)
+);
+const MoviesPage = lazy(() =>
+  import(
+    "./components/MoviesPage/MoviesPage" /* webpackChunkName: "MoviePage" */
+  )
+);
+const MovieDetailsPage = lazy(() =>
+  import(
+    "./components/MovieDetailsPage/MovieDetailsPage" /* webpackChunkName: "MovieDetailsPage" */
+  )
+);
+const Error = lazy(() =>
+  import(
+    "./components/DownloadOrError/DownloadOrError" /* webpackChunkName: "Error" */
+  )
+);
 
 function App() {
   return (
     <>
       <Header />
-
-      <Switch>
-        <Route path="/" exact>
-          <Section>
-            <Container>
+      <Container>
+        <Suspense fallback={<Download message={"Downloading..."} />}>
+          <Switch>
+            <Route path="/" exact>
               <HomeView />
-            </Container>
-          </Section>
-        </Route>
+            </Route>
 
-        <Route path="/movies" exact>
-          <Section>
-            <Container>
+            <Route path="/movies" exact>
               <MoviesPage />
-            </Container>
-          </Section>
-        </Route>
+            </Route>
 
-        <Route path="/movies/:movieId">
-          <Section>
-            <Container>
+            <Route path="/movies/:movieId">
               <MovieDetailsPage />
-            </Container>
-          </Section>
-        </Route>
+            </Route>
 
-        <Route>
-          <Section>
-            <Container>
-              <NotFoundView />
-            </Container>
-          </Section>
-        </Route>
-      </Switch>
+            <Route>
+              <Error message={"404 Page is not found :("} />
+            </Route>
+          </Switch>
+        </Suspense>
+      </Container>
     </>
   );
 }

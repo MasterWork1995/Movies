@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { fetchQuery } from "../../services/moviesApi";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import api from "../../services/moviesApi";
 import movie from "../../img/movie.jpg";
-
 import s from "./MoviesPage.module.css";
 
 const MoviesPage = () => {
   const [query, setQuery] = useState("");
   const [request, setRequest] = useState("");
   const [movies, setMovies] = useState([]);
+  const { url } = useRouteMatch();
+  const location = useLocation();
 
   useEffect(() => {
     if (request === "") return;
@@ -16,7 +17,7 @@ const MoviesPage = () => {
   }, [request]);
 
   const renderSearchQuery = () => {
-    fetchQuery(request).then(setMovies);
+    api.fetchQuery(request).then(setMovies);
   };
 
   const handleChangeRequest = (e) => {
@@ -41,14 +42,24 @@ const MoviesPage = () => {
           autoFocus
           className={s.formText}
         />
-        <button className={s.button}>Search</button>
+        <button type="submit" className={s.button}>
+          Search
+        </button>
       </form>
       {movies.length > 0 && (
         <>
           <ul className={s.list}>
             {movies.map(({ id, title, poster_path }) => (
               <li key={id} className={s.listItem}>
-                <Link className={s.link} to={`movies/${id}`}>
+                <Link
+                  className={s.link}
+                  to={{
+                    pathname: `${url}/${id}`,
+                    state: {
+                      from: location.pathname,
+                    },
+                  }}
+                >
                   <div className={s.wrapper}>
                     {poster_path ? (
                       <img
@@ -70,4 +81,4 @@ const MoviesPage = () => {
     </>
   );
 };
-export { MoviesPage };
+export default MoviesPage;

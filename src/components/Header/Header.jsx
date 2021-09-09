@@ -1,5 +1,5 @@
-import { Container } from "../Container/Container";
-import { Navigation } from "../Navigation/Navigation";
+import Container from "../Container/Container";
+import Navigation from "../Navigation/Navigation";
 import s from "./Header.module.css";
 
 const Header = () => {
@@ -14,4 +14,4 @@ const Header = () => {
   );
 };
 
-export { Header };
+export default Header;

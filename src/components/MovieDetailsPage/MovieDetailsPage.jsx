@@ -1,34 +1,53 @@
-import { useState, useEffect } from "react";
-import { useParams, NavLink, useRouteMatch, Route } from "react-router-dom";
-import { fetchMovieDetails } from "../../services/moviesApi";
+import { useState, useEffect, lazy, Suspense } from "react";
+import {
+  useParams,
+  NavLink,
+  useRouteMatch,
+  Route,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import api from "../../services/moviesApi";
 import s from "./MovieDetailsPage.module.css";
 import movieDefault from "../../img/movie.jpg";
+import DownloadOrError from "../DownloadOrError/DownloadOrError";
 
-import { Cast } from "../Cast/Cast";
-import { Review } from "../Review/Review";
+const Review = lazy(() =>
+  import("../Review/Review" /* webpackChunkName: "Cast" */)
+);
+const Cast = lazy(() =>
+  import("../Cast/Cast" /* webpackChunkName: "Review" */)
+);
 
 const MovieDetailsPage = () => {
   const [movie, setMovie] = useState(null);
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
+  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     renderMovieDetails();
   }, [movieId]);
 
   const renderMovieDetails = () => {
-    fetchMovieDetails(movieId).then(setMovie);
+    api.fetchMovieDetails(movieId).then(setMovie);
   };
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    if (location.state && location.state.from) {
+      return history.push(location.state.from);
+    }
+    history.push("/");
+  };
 
   return (
     <>
-      <button onClick={handleClick} className={s.button}>
-        Go back
-      </button>
       {movie && (
         <>
+          <button onClick={handleClick} className={s.button}>
+            Go back
+          </button>
           <div className={s.wrapper}>
             <div className={s.imageWrapper}>
               {movie.poster_path ? (
@@ -77,16 +96,18 @@ const MovieDetailsPage = () => {
               </ul>
             </div>
           </div>
-          <Route path={`${path}/cast`}>
-            <Cast />
-          </Route>
-          <Route path={`${path}/review`}>
-            <Review />
-          </Route>
+          <Suspense fallback={<DownloadOrError message={"Downloading..."} />}>
+            <Route path={`${path}/cast`}>
+              <Cast />
+            </Route>
+            <Route path={`${path}/review`}>
+              <Review />
+            </Route>
+          </Suspense>
         </>
       )}
     </>
   );
 };
 
-export { MovieDetailsPage };
+export default MovieDetailsPage;

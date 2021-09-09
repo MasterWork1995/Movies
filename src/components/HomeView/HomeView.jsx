@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchTrendingMovies } from "../../services/moviesApi";
+import api from "../../services/moviesApi";
 import s from "./HomeView.module.css";
 
 const HomeView = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
 
-  const trendingMoviesRender = () => {
-    fetchTrendingMovies().then((response) => setTrendingMovies(response));
-  };
-
   useEffect(() => {
     trendingMoviesRender();
   }, []);
+
+  const trendingMoviesRender = () => {
+    api.fetchTrendingMovies().then((response) => setTrendingMovies(response));
+  };
 
   return (
     <>
@@ -37,4 +37,4 @@ const HomeView = () => {
   );
 };
 
-export { HomeView };
+export default HomeView;
