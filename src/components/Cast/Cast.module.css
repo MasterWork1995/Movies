@@ -57,3 +57,11 @@
 .characterName {
   color: #ff6b08;
 }
+
+.error {
+  text-align: center;
+  font-size: 40px;
+  color: #3f4143;
+  font-style: italic;
+  margin-bottom: 50px;
+}
