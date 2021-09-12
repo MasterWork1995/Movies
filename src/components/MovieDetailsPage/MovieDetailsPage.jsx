@@ -24,9 +24,6 @@ const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
   const location = useLocation();
-  const [locationFrom, setLocationFrom] = useState(
-    location?.state?.from ?? "/"
-  );
 
   useEffect(() => {
     renderMovieDetails();
@@ -40,7 +37,11 @@ const MovieDetailsPage = () => {
     <>
       {movie && (
         <>
-          <Link type="button" to={locationFrom} className={s.button}>
+          <Link
+            type="button"
+            to={location?.state?.from ?? "/"}
+            className={s.button}
+          >
             Go back
           </Link>
           <div className={s.wrapper}>
