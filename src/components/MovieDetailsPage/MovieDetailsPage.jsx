@@ -4,13 +4,13 @@ import {
   NavLink,
   useRouteMatch,
   Route,
-  useHistory,
+  Link,
   useLocation,
 } from "react-router-dom";
 import api from "../../services/moviesApi";
 import s from "./MovieDetailsPage.module.css";
 import movieDefault from "../../img/movie.jpg";
-import DownloadOrError from "../DownloadOrError/DownloadOrError";
+import Download from "../Download/Download";
 
 const Review = lazy(() =>
   import("../Review/Review" /* webpackChunkName: "Cast" */)
@@ -23,8 +23,10 @@ const MovieDetailsPage = () => {
   const [movie, setMovie] = useState(null);
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
-  const history = useHistory();
   const location = useLocation();
+  const [locationFrom, setLocationFrom] = useState(
+    location?.state?.from ?? "/"
+  );
 
   useEffect(() => {
     renderMovieDetails();
@@ -34,20 +36,13 @@ const MovieDetailsPage = () => {
     api.fetchMovieDetails(movieId).then(setMovie);
   };
 
-  const handleClick = () => {
-    if (location.state && location.state.from) {
-      return history.push(location.state.from);
-    }
-    history.push("/");
-  };
-
   return (
     <>
       {movie && (
         <>
-          <button onClick={handleClick} className={s.button}>
+          <Link type="button" to={locationFrom} className={s.button}>
             Go back
-          </button>
+          </Link>
           <div className={s.wrapper}>
             <div className={s.imageWrapper}>
               {movie.poster_path ? (
@@ -96,7 +91,7 @@ const MovieDetailsPage = () => {
               </ul>
             </div>
           </div>
-          <Suspense fallback={<DownloadOrError message={"Downloading..."} />}>
+          <Suspense fallback={<Download message={"Downloading..."} />}>
             <Route path={`${path}/cast`}>
               <Cast />
             </Route>

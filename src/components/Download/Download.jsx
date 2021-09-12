@@ -1,4 +1,4 @@
-import s from "./DownloadOrError.module.css";
+import s from "./Download.module.css";
 
 const Download = ({ message }) => {
   return <h1 className={s.title}>{message}</h1>;

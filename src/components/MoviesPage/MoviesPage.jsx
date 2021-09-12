@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import { Link, useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import api from "../../services/moviesApi";
 import movie from "../../img/movie.jpg";
 import s from "./MoviesPage.module.css";
@@ -10,10 +10,14 @@ const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const { url } = useRouteMatch();
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
-    if (request === "") return;
-    renderSearchQuery();
+    setRequest(new URLSearchParams(location.search).get("query"));
+  }, [location.search]);
+
+  useEffect(() => {
+    request && renderSearchQuery();
   }, [request]);
 
   const renderSearchQuery = () => {
@@ -26,8 +30,13 @@ const MoviesPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (query === "") return;
     setRequest(query);
     setQuery("");
+    history.push({
+      ...location,
+      search: `query=${query}`,
+    });
   };
 
   return (
@@ -56,7 +65,7 @@ const MoviesPage = () => {
                   to={{
                     pathname: `${url}/${id}`,
                     state: {
-                      from: location.pathname,
+                      from: location,
                     },
                   }}
                 >

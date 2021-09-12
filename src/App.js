@@ -1,8 +1,8 @@
 import { lazy, Suspense } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Container from "./components/Container/Container";
-import Download from "./components/DownloadOrError/DownloadOrError";
+import Download from "./components/Download/Download";
 
 const HomeView = lazy(() =>
   import("./components/HomeView/HomeView" /* webpackChunkName: "HomePage" */)
@@ -15,11 +15,6 @@ const MoviesPage = lazy(() =>
 const MovieDetailsPage = lazy(() =>
   import(
     "./components/MovieDetailsPage/MovieDetailsPage" /* webpackChunkName: "MovieDetailsPage" */
-  )
-);
-const Error = lazy(() =>
-  import(
-    "./components/DownloadOrError/DownloadOrError" /* webpackChunkName: "Error" */
   )
 );
 
@@ -43,7 +38,7 @@ function App() {
             </Route>
 
             <Route>
-              <Error message={"404 Page is not found :("} />
+              <Redirect to="/" />
             </Route>
           </Switch>
         </Suspense>
